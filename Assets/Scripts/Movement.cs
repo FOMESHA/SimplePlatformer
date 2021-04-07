@@ -6,6 +6,7 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] private float _movementSpeed;
     [SerializeField] private GroundChecker _groundChecker;
+    [SerializeField] private float _jumpForce;
 
     private float _direction;
     private Rigidbody2D _rigidbody2D;
@@ -37,7 +38,7 @@ public class Movement : MonoBehaviour
     {
         if (_groundChecker.IsGrounded && _isJumpKeyDown)
         {
-            _rigidbody2D.AddForce(Vector2.up, ForceMode2D.Impulse);
+            _rigidbody2D.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
     }
 
