@@ -17,19 +17,19 @@ public class CoinsSpawner : MonoBehaviour
         GenerateCoins();
     }
 
+    public void SpawnCoins()
+    {
+        foreach (Coin coin in _coins)
+        {
+            coin.gameObject.SetActive(true);
+        }
+    }
+
     private void GenerateCoins()
     {
         for (int i = 0; i < _coinsCount; i++)
         {
             _coins.Add(Instantiate(_coinPrefab, transform.position, Quaternion.identity, transform));
-        }
-    }
-
-    public void SpawnCoins()
-    {
-        foreach(Coin coin in _coins)
-        {
-            coin.gameObject.SetActive(true);
         }
     }
 }

@@ -2,44 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float _movementSpeed;
-    [SerializeField] private GroundChecker _groundChecker;
-    [SerializeField] private float _jumpForce;
+    [SerializeField] protected float MovementSpeed;
 
-    private float _direction;
-    private Rigidbody2D _rigidbody2D;
-    private bool _isJumpKeyDown;
+    protected float Direction;
+    protected Rigidbody2D Rigidbody2D;
+    protected HurtBox HurtBox;
+    protected bool IsFacingRight = true;
 
-    private void Start()
+    private void Awake()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        InitializeComponents();
     }
 
-    private void Update()
+    protected void InitializeComponents()
     {
-        _isJumpKeyDown = Input.GetKey(KeyCode.Space);
-        _direction = Input.GetAxis("Horizontal");
+        Rigidbody2D = GetComponent<Rigidbody2D>();
+        HurtBox = GetComponentInChildren<HurtBox>();
     }
 
-    private void FixedUpdate()
+    protected void Move()
     {
-        Move();
-        Jump();
-    }
-
-    private void Move()
-    {
-        _rigidbody2D.velocity = new Vector2(_movementSpeed * _direction, _rigidbody2D.velocity.y);
-    }
-
-    private void Jump()
-    {
-        if (_groundChecker.IsGrounded && _isJumpKeyDown)
+        if (!HurtBox.IsHurt)
         {
-            _rigidbody2D.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            Rigidbody2D.velocity = new Vector2(MovementSpeed * Direction, Rigidbody2D.velocity.y);
+            ChangeDirection();
         }
     }
 
+    private void ChangeDirection()
+    {
+        if (Rigidbody2D.velocity.x > 0 && !IsFacingRight || Rigidbody2D.velocity.x < 0 && IsFacingRight)
+        {
+            RotateSprite();
+        }
+    }
+
+    private void RotateSprite()
+    {
+        transform.Rotate(new Vector2(0f, 180f));
+        IsFacingRight = !IsFacingRight;
+    }
 }

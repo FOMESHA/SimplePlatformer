@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class Coin : MonoBehaviour
 {
@@ -15,8 +13,8 @@ public class Coin : MonoBehaviour
     {
         gameObject.transform.parent = null;
         AddStartImpulse();
-        StartCoroutine(ActivateCollecteble());
-        StartCoroutine(Destroyer());
+        StartCoroutine(ActivateCollectebleComponent());
+        StartCoroutine(DestroyByTime());
     }
 
     private void AddStartImpulse()
@@ -24,7 +22,7 @@ public class Coin : MonoBehaviour
         _rigidbody2D.AddForce(new Vector2(Random.Range(-1f, 1f), 1f) * _spawnImpulseForce, ForceMode2D.Impulse);
     }
 
-    IEnumerator ActivateCollecteble()
+    private IEnumerator ActivateCollectebleComponent()
     {
         var waitForSeconds = new WaitForSeconds(_activateCollectableTime);
         yield return waitForSeconds;
@@ -32,7 +30,7 @@ public class Coin : MonoBehaviour
         yield break;
     }
 
-    IEnumerator Destroyer()
+    private IEnumerator DestroyByTime()
     {
         var waitForSeconds = new WaitForSeconds(_timeToDestroy);
         yield return waitForSeconds;

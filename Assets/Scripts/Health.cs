@@ -1,15 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private HeartBox _heartBox;
-    [SerializeField] private CoinsSpawner _coinsSpawner;
+    [SerializeField] private int _healthPoints;
 
-    public void TakeDamage()
+    public virtual void TakeDamage(int damage)
     {
-        _coinsSpawner.SpawnCoins();
+        _healthPoints -= damage;
+        if (_healthPoints <= 0)
+        {
+            Die();
+        }
+    }
+
+    protected virtual void Die()
+    {
         Destroy(gameObject);
     }
 }
